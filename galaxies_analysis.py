@@ -27,7 +27,7 @@ def print_stats(data_column):
     print(f"The median is {data_column.median()}")
     print(f"The mean is {data_column.mean()}")
     
-def plot_histogram(data_column, plot_title, x_label):
+def plot_histogram(data_column, plot_title, x_label, savename):
     '''
     Displays a histogram of the input data 
     frame column.
@@ -51,7 +51,7 @@ def plot_histogram(data_column, plot_title, x_label):
     plt.title(plot_title)
 
     plt.xlabel(x_label) 
-
+    plt.savefig('Figures/'+savename)
     plt.show()
     
     
@@ -80,7 +80,7 @@ def convert_redshift_to_distance(galaxy_redshifts): #this function needs redshif
         
     return luminosity_distance_lightyears #add a return variable so we can use these distances elsewhere in our code
 
-def plot_scatter(data_column_x, data_column_y, plot_title, x_label, y_label):
+def plot_scatter(data_column_x, data_column_y, plot_title, x_label, y_label, savename):
     '''
     Displays a histogram of the input data 
     frame columns.
@@ -97,6 +97,8 @@ def plot_scatter(data_column_x, data_column_y, plot_title, x_label, y_label):
         The label for the x-axis of the plot
     y_label: string
         The label for the y-axis of the plot
+    savename: string(?)
+        Titles the file
     Returns:
     -----------
     '''
@@ -106,7 +108,7 @@ def plot_scatter(data_column_x, data_column_y, plot_title, x_label, y_label):
     plt.title(plot_title)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
-    
+    plt.savefig('Figures/'+savename)
     plt.show()
     
 file_names = ['Data/Random-SF-Galaxies-PortsmouthGroup_properties.csv',
@@ -134,11 +136,11 @@ for file in file_names:
     # 3. display a histogram of the 'logMass' and 'SFR' values
     
     print('Displaying the distributions of logMass values...')
-    plot_histogram(galaxies_df['logMass'], 'Stellar Masses of Galaxies', 'log(Stellar Mass/Solar Mass)')
+    plot_histogram(galaxies_df['logMass'], 'Stellar Masses of Galaxies', 'log(Stellar Mass/Solar Mass)', 'Stellar_masses_histogram.png')
     
     
     print('Displaying the distributions of star formation rate values...')
-    plot_histogram(np.log10(galaxies_df['SFR']), 'SFRs of Galaxies', 'log(SFR) units: Solar Mass/year')
+    plot_histogram(np.log10(galaxies_df['SFR']), 'SFRs of Galaxies', 'log(SFR) units: Solar Mass/year', 'SFR_histogram.png')
     
     print('Converting redshifts to distances in lightyears...')
     distances_lyr = convert_redshift_to_distance(galaxies_df['z'])
@@ -148,10 +150,10 @@ for file in file_names:
     log_SFRs = np.log10(galaxies_df['SFR'])
     
     print('Displaying the logMass vs log10 of distance...')
-    plot_scatter(log_distances, galaxies_df['logMass'], 'logMass vs logDistance', 'logDistance (lightyears)', 'logMass (Stellar Mass/Solar Mass)')
+    plot_scatter(log_distances, galaxies_df['logMass'], 'logMass vs logDistance', 'logDistance (lightyears)', 'logMass (Stellar Mass/Solar Mass)', 'Stellar_masses_scatter.png')
 
     print('Displaying the logSFR vs log10 of distance...')
-    plot_scatter(log_distances, log_SFRs, 'logSFR vs logDistance', 'logDistance (lightyears)', 'log SFR (Solar Mass/year)')
+    plot_scatter(log_distances, log_SFRs, 'logSFR vs logDistance', 'logDistance (lightyears)', 'log SFR (Solar Mass/year)', 'SFR_scatter.png')
     print('==================================================')
     
     
